@@ -1,0 +1,188 @@
+.site-header {
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.site-header__content {
+  min-height: 52px;
+  max-width: 1126px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.brand {
+  width: 56px;
+  color: #171717;
+  text-decoration: none;
+  line-height: .72;
+  transform: rotate(-7deg);
+}
+
+.brand__number {
+  display: block;
+  font: 800 italic 18px/.75 "Comic Sans MS", "Segoe Print", cursive;
+  letter-spacing: -2px;
+}
+
+.brand__name {
+  display: block;
+  margin-left: 8px;
+  font: 700 italic 9px/.8 "Comic Sans MS", "Segoe Print", cursive;
+  letter-spacing: -.8px;
+}
+
+.site-nav {
+  display: none;
+}
+
+.site-nav a {
+  color: #111;
+  font: 400 8px/1 Arial, sans-serif;
+  text-decoration: none;
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  text-decoration: underline;
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.sign-up {
+  padding: 8px 12px;
+  border-radius: 7px;
+  color: #111;
+  background: #ffb45d;
+  font: 400 8px/1 Arial, sans-serif;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 12%);
+}
+
+.profile-button {
+  position: relative;
+  width: 33px;
+  height: 33px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 50%;
+  background: #627094;
+  cursor: pointer;
+}
+
+.profile-button__head,
+.profile-button__body {
+  position: absolute;
+  left: 50%;
+  display: block;
+  background: #f8f8f8;
+  transform: translateX(-50%);
+}
+
+.profile-button__head {
+  top: 6px;
+  width: 11px;
+  height: 13px;
+  border-radius: 50%;
+}
+
+.profile-button__body {
+  bottom: -9px;
+  width: 25px;
+  height: 22px;
+  border-radius: 50% 50% 0 0;
+}
+
+/* Tablet: 768px–1199px */
+@media (min-width: 768px) {
+  .site-header {
+    padding: 0;
+  }
+
+  .site-header__content {
+    min-height: 53px;
+    padding: 10px 48px;
+  }
+
+  .site-nav {
+    display: flex;
+    gap: clamp(20px, 4vw, 33px);
+    margin-left: clamp(42px, 8vw, 67px);
+  }
+
+  .site-header__actions {
+    gap: 18px;
+  }
+
+  .sign-up {
+    padding: 8px 14px;
+  }
+}
+
+/* Desktop: from 1200px */
+@media (min-width: 1200px) {
+  .site-header {
+    padding: 0;
+  }
+
+  .site-header__content {
+    width: 100%;
+    max-width: none;
+    min-height: 72px;
+    padding: 12px clamp(56px, 8vw, 154px);
+  }
+
+  .brand {
+    width: 72px;
+  }
+
+  .brand__number {
+    font-size: 24px;
+  }
+
+  .brand__name {
+    font-size: 11px;
+  }
+
+  .site-nav {
+    gap: clamp(34px, 3vw, 58px);
+    margin-left: clamp(74px, 7vw, 136px);
+  }
+
+  .site-nav a,
+  .sign-up {
+    font-size: 12px;
+  }
+
+  .sign-up {
+    padding: 11px 19px;
+    border-radius: 8px;
+  }
+
+  .profile-button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .profile-button__head {
+    top: 7px;
+    width: 14px;
+    height: 16px;
+  }
+
+  .profile-button__body {
+    bottom: -11px;
+    width: 31px;
+    height: 27px;
+  }
+}

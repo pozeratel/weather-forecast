@@ -1,0 +1,22 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" fill="#1D1A23"/>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <rect y="620" width="1600" height="280" fill="#3B2A24"/>
+  <path d="M0 620C220 560 390 520 590 560C820 608 1040 696 1280 662C1410 642 1510 610 1600 582V900H0V620Z" fill="#6A4334"/>
+  <circle cx="1250" cy="260" r="120" fill="#FFD6A5"/>
+  <ellipse cx="1220" cy="310" rx="200" ry="140" fill="#FF9F43" fill-opacity="0.35"/>
+  <path d="M0 710C220 660 410 634 630 668C840 700 1040 748 1250 730C1350 722 1470 700 1600 672V900H0V710Z" fill="#8C5A3C"/>
+  <g opacity="0.25">
+    <path d="M90 230L130 290" stroke="#FFF3DF" stroke-width="3" stroke-linecap="round"/>
+    <path d="M180 170L240 220" stroke="#FFF3DF" stroke-width="3" stroke-linecap="round"/>
+    <path d="M320 150L380 190" stroke="#FFF3DF" stroke-width="3" stroke-linecap="round"/>
+    <path d="M470 190L530 240" stroke="#FFF3DF" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <defs>
+    <linearGradient id="sky" x1="800" y1="0" x2="800" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1D365B"/>
+      <stop offset="0.45" stop-color="#8B4B5F"/>
+      <stop offset="1" stop-color="#E3683A"/>
+    </linearGradient>
+  </defs>
+</svg>
