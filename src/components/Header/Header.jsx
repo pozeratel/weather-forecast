@@ -1,6 +1,18 @@
 import { useEffect, useState } from "react";
-import "./Header.css";
 import { HeaderModal } from "../HeaderModal/HeaderModal";
+import {
+  Actions,
+  Brand,
+  BrandName,
+  BrandNumber,
+  HeaderContent,
+  HeaderRoot,
+  Nav,
+  ProfileButton,
+  ProfileHead,
+  ProfileBody,
+  SignUpButton,
+} from "./Header.styled";
 
 const navigation = ["Who we are", "Contacts", "Menu"];
 
@@ -32,50 +44,48 @@ export default function Header() {
   }, [user]);
 
   return (
-    <header className="site-header">
-      <div className="site-header__content">
-        <a className="brand" href="/" aria-label="247 Forecast — home">
-          <span className="brand__number">247</span>
-          <span className="brand__name">forecast</span>
-        </a>
+    <HeaderRoot>
+      <HeaderContent>
+        <Brand href="/" aria-label="247 Forecast — home">
+          <BrandNumber>247</BrandNumber>
+          <BrandName>forecast</BrandName>
+        </Brand>
 
-        <nav className="site-nav" aria-label="Main navigation">
+        <Nav aria-label="Main navigation">
           {navigation.map((item) => (
             <a href={`#${item.toLowerCase().replaceAll(" ", "-")}`} key={item}>
               {item}
             </a>
           ))}
-        </nav>
+        </Nav>
 
-        <div className="site-header__actions">
+        <Actions>
           {user ? (
             <p>{user.name}</p>
           ) : (
-            <button
+            <SignUpButton
               type="button"
-              className="sign-up"
               onClick={() => setIsModalOpen(true)}
             >
               Sign Up
-            </button>
+            </SignUpButton>
           )}
 
-          <button
-            className="profile-button"
+          <ProfileButton
             type="button"
             aria-label="Open profile"
           >
-            <span className="profile-button__head" />
-            <span className="profile-button__body" />
-          </button>
-        </div>
-      </div>
+            <ProfileHead />
+            <ProfileBody />
+          </ProfileButton>
+        </Actions>
+      </HeaderContent>
 
       <HeaderModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         setUser={setUser}
       />
-    </header>
+    </HeaderRoot>
   );
 }

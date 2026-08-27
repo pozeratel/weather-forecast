@@ -1,14 +1,17 @@
 import {
   HeroSection,
   HeroContent,
-  HeroBadge,
   HeroTitle,
   HeroText,
+  HeroDetails,
+  WeatherSummary,
+  SummaryDate,
+  SummaryTemperature,
   SearchForm,
   SearchInput,
   SearchButton,
-  HeroNote,
 } from "./Hero.styled";
+import { PageContainer } from "../PageContainer/PageContainer.styled";
 
 export const Hero = ({ searchTerm, setSearchTerm, onSearch }) => {
   const handleSubmit = (event) => {
@@ -18,24 +21,29 @@ export const Hero = ({ searchTerm, setSearchTerm, onSearch }) => {
 
   return (
     <HeroSection>
-      <HeroContent>
-        <HeroBadge>New season is available</HeroBadge>
-        <HeroTitle>Weather dashboard</HeroTitle>
-        <HeroText>
-          Create your personal list of favorite cities and always be aware of the weather.
-        </HeroText>
+      <PageContainer>
+        <HeroContent>
+          <HeroTitle>Weather dashboard</HeroTitle>
+          <HeroDetails>
+            <HeroText>
+              Create your personal list of favorite cities and always be aware of the weather.
+            </HeroText>
+            <WeatherSummary>
+              <SummaryDate>October 2023</SummaryDate>
+              <SummaryTemperature>Today: 17°</SummaryTemperature>
+            </WeatherSummary>
+          </HeroDetails>
 
-        <SearchForm onSubmit={handleSubmit}>
-          <SearchInput
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-            placeholder="Search location..."
-          />
-          <SearchButton type="submit" aria-label="Search" />
-        </SearchForm>
-
-        <HeroNote>Track your favorites in one clear place.</HeroNote>
-      </HeroContent>
+          <SearchForm onSubmit={handleSubmit}>
+            <SearchInput
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Search location..."
+            />
+            <SearchButton type="submit" aria-label="Search" />
+          </SearchForm>
+        </HeroContent>
+      </PageContainer>
     </HeroSection>
   );
 };

@@ -10,6 +10,7 @@ import {
   Input,
   CheckboxField,
   SubmitButton,
+  ErrorText,
 } from "./HeaderModal.styled";
 
 export const HeaderModal = ({ isOpen, onClose, setUser }) => {
@@ -99,9 +100,7 @@ export const HeaderModal = ({ isOpen, onClose, setUser }) => {
               onChange={handleChange}
             />
             {errors.name ? (
-              <span style={{ color: "#dc2626", fontSize: "13px" }}>
-                {errors.name}
-              </span>
+              <ErrorText>{errors.name}</ErrorText>
             ) : null}
           </Field>
 
@@ -115,9 +114,7 @@ export const HeaderModal = ({ isOpen, onClose, setUser }) => {
               onChange={handleChange}
             />
             {errors.email ? (
-              <span style={{ color: "#dc2626", fontSize: "13px" }}>
-                {errors.email}
-              </span>
+              <ErrorText>{errors.email}</ErrorText>
             ) : null}
           </Field>
 
@@ -131,9 +128,7 @@ export const HeaderModal = ({ isOpen, onClose, setUser }) => {
               onChange={handleChange}
             />
             {errors.password ? (
-              <span style={{ color: "#dc2626", fontSize: "13px" }}>
-                {errors.password}
-              </span>
+              <ErrorText>{errors.password}</ErrorText>
             ) : null}
           </Field>
 
@@ -147,9 +142,7 @@ export const HeaderModal = ({ isOpen, onClose, setUser }) => {
             <span>I agree to the terms and conditions</span>
           </CheckboxField>
           {errors.agree ? (
-            <span style={{ color: "#dc2626", fontSize: "13px" }}>
-              {errors.agree}
-            </span>
+            <ErrorText>{errors.agree}</ErrorText>
           ) : null}
 
           <SubmitButton type="submit">Create account</SubmitButton>

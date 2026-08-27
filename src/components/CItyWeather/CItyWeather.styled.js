@@ -10,7 +10,7 @@ export const CityWeatherSection = styled.section`
 `;
 
 export const ForecastGrid = styled.div`
-  width: min(100%, 980px);
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, minmax(250px, 1fr));
   gap: 22px;
@@ -151,11 +151,15 @@ export const FavoriteButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #ff7a7a;
+  background: ${({ $isFavorite }) => ($isFavorite ? "#e84f5f" : "#ff7a7a")};
   color: #fff;
   font-size: 16px;
   cursor: pointer;
   box-shadow: 0 5px 12px rgba(255, 122, 122, 0.25);
+
+  svg {
+    fill: ${({ $isFavorite }) => ($isFavorite ? "currentColor" : "none")};
+  }
 `;
 
 export const SeeMoreButton = styled.button`
@@ -170,7 +174,7 @@ export const SeeMoreButton = styled.button`
   cursor: pointer;
 `;
 
-export const MenuButton = styled.button`
+export const RemoveButton = styled.button`
   width: 36px;
   height: 36px;
   border: none;
@@ -178,10 +182,15 @@ export const MenuButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #efefef;
-  color: #2b2b2b;
+  background: #fff0f0;
+  color: #c94848;
   font-size: 16px;
   cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: #ffdada;
+  }
 `;
 
 export const RefreshButton = styled.button`

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FiHeart, FiMenu, FiRefreshCw } from "react-icons/fi";
+import { FiHeart, FiRefreshCw, FiTrash2 } from "react-icons/fi";
 import { getCurrentWeather } from "../../API/Weather APi/weatherAPI";
 import {
   CityWeatherSection,
@@ -21,9 +21,10 @@ import {
   CardFooter,
   FavoriteButton,
   SeeMoreButton,
-  MenuButton,
+  RemoveButton,
   RefreshButton,
 } from "./CItyWeather.styled";
+import { PageContainer } from "../PageContainer/PageContainer.styled";
 
 const countryNames = {
   CZ: "Czech Republic",
@@ -35,7 +36,7 @@ const countryNames = {
   PL: "Poland",
 };
 
-const formatWeatherCard = (weather, index) => {
+const formatWeatherCard = (weather) => {
   const timestamp = weather.dt * 1000;
 
   return {
@@ -58,7 +59,17 @@ const formatWeatherCard = (weather, index) => {
   };
 };
 
-export const CityWeather = ({ searchTerm = "", cities = [] }) => {
+export const CityWeather = ({
+  searchTerm = "",
+  cities = [],
+  selectedForecast,
+  onForecastSelect,
+  selectedDetailsCity,
+  onDetailsSelect,
+  favoriteCities = [],
+  onFavoriteToggle,
+  onCityRemove,
+}) => {
   const [cards, setCards] = useState([]);
   const [loadingCities, setLoadingCities] = useState({});
 
@@ -77,7 +88,7 @@ export const CityWeather = ({ searchTerm = "", cities = [] }) => {
         const nextCards = responses.map((weather) => formatWeatherCard(weather));
 
         setCards(nextCards);
-      } catch (error) {
+      } catch {
         setCards([]);
       }
     };
@@ -111,10 +122,11 @@ export const CityWeather = ({ searchTerm = "", cities = [] }) => {
 
   return (
     <CityWeatherSection>
-      <ForecastGrid>
+      <PageContainer>
+        <ForecastGrid>
         {filteredCards.length > 0 ? (
-          filteredCards.map(({ city, country, time, date, day, temp }, index) => (
-            <WeatherCard key={`${city}-${index}`}>
+          filteredCards.map(({ city, country, time, date, day, temp }) => (
+            <WeatherCard key={city}>
               <CardHeader>
                 <div>
                   <CardTitle>{city}</CardTitle>
@@ -134,8 +146,38 @@ export const CityWeather = ({ searchTerm = "", cities = [] }) => {
               <TimeValue>{time}</TimeValue>
 
               <ToggleRow>
-                <ToggleButtonActive type="button">Hourly forecast</ToggleButtonActive>
-                <ToggleButton type="button">Weekly forecast</ToggleButton>
+                {selectedForecast?.type === "hourly" &&
+                selectedForecast.city === city ? (
+                  <ToggleButtonActive
+                    type="button"
+                    onClick={() => onForecastSelect("hourly", city)}
+                  >
+                    Hourly forecast
+                  </ToggleButtonActive>
+                ) : (
+                  <ToggleButton
+                    type="button"
+                    onClick={() => onForecastSelect("hourly", city)}
+                  >
+                    Hourly forecast
+                  </ToggleButton>
+                )}
+                {selectedForecast?.type === "weekly" &&
+                selectedForecast.city === city ? (
+                  <ToggleButtonActive
+                    type="button"
+                    onClick={() => onForecastSelect("weekly", city)}
+                  >
+                    Weekly forecast
+                  </ToggleButtonActive>
+                ) : (
+                  <ToggleButton
+                    type="button"
+                    onClick={() => onForecastSelect("weekly", city)}
+                  >
+                    Weekly forecast
+                  </ToggleButton>
+                )}
               </ToggleRow>
 
               <DateRow>
@@ -150,22 +192,49 @@ export const CityWeather = ({ searchTerm = "", cities = [] }) => {
               <Temperature>{temp}</Temperature>
 
               <CardFooter>
-                <FavoriteButton type="button" aria-label={`Save ${city}`}>
+                <FavoriteButton
+                  type="button"
+                  $isFavorite={favoriteCities.includes(city)}
+                  onClick={() => onFavoriteToggle(city)}
+                  aria-label={
+                    favoriteCities.includes(city)
+                      ? `Remove ${city} from favorites`
+                      : `Add ${city} to favorites`
+                  }
+                  aria-pressed={favoriteCities.includes(city)}
+                  title={
+                    favoriteCities.includes(city)
+                      ? "Remove from favorites"
+                      : "Add to favorites"
+                  }
+                >
                   <FiHeart />
                 </FavoriteButton>
 
-                <SeeMoreButton type="button">See more</SeeMoreButton>
+                <SeeMoreButton
+                  type="button"
+                  onClick={() => onDetailsSelect(city)}
+                  aria-expanded={selectedDetailsCity === city}
+                >
+                  See more
+                </SeeMoreButton>
 
-                <MenuButton type="button" aria-label={`Open ${city} menu`}>
-                  <FiMenu />
-                </MenuButton>
+                <RemoveButton
+                  type="button"
+                  onClick={() => onCityRemove(city)}
+                  aria-label={`Remove ${city}`}
+                  title="Remove card"
+                >
+                  <FiTrash2 />
+                </RemoveButton>
               </CardFooter>
             </WeatherCard>
           ))
         ) : (
           <p>No matching cities or countries found.</p>
         )}
-      </ForecastGrid>
+        </ForecastGrid>
+      </PageContainer>
     </CityWeatherSection>
   );
 };

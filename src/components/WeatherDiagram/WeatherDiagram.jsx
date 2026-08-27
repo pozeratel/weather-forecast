@@ -8,27 +8,29 @@ import {
   Tooltip,
 } from "recharts";
 import { getHourlyForecast } from "../../API/Weather APi/weatherAPI";
-import { DiagramSection, DiagramTitle, ChartContainer, DiagramWrapper } from "./WeatherDiagram.styled";
+import {
+  DiagramSection,
+  DiagramTitle,
+  ChartContainer,
+  DiagramWrapper,
+  DiagramMessage,
+  TooltipBox,
+  TooltipTemperature,
+  TooltipTime,
+} from "./WeatherDiagram.styled";
+import { PageContainer } from "../PageContainer/PageContainer.styled";
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return (
-      <div
-        style={{
-          backgroundColor: "#fff",
-          padding: "8px 12px",
-          border: "1px solid #ccc",
-          borderRadius: "4px",
-          fontSize: "12px",
-        }}
-      >
-        <p style={{ margin: 0, fontWeight: "bold" }}>
+      <TooltipBox>
+        <TooltipTime>
           {payload[0].payload.time}
-        </p>
-        <p style={{ margin: "4px 0 0", color: "#FFA500" }}>
+        </TooltipTime>
+        <TooltipTemperature>
           {payload[0].value.toFixed(1)}°C
-        </p>
-      </div>
+        </TooltipTemperature>
+      </TooltipBox>
     );
   }
   return null;
@@ -88,10 +90,12 @@ export const WeatherDiagram = ({ city = "Prague" }) => {
   if (loading) {
     return (
       <DiagramSection>
+        <PageContainer>
         <DiagramTitle>Прогноз за годинами</DiagramTitle>
-        <div style={{ padding: "2rem", textAlign: "center", color: "#666" }}>
+        <DiagramMessage>
           Завантаження...
-        </div>
+        </DiagramMessage>
+        </PageContainer>
       </DiagramSection>
     );
   }
@@ -99,16 +103,19 @@ export const WeatherDiagram = ({ city = "Prague" }) => {
   if (error || !forecastData.length) {
     return (
       <DiagramSection>
+        <PageContainer>
         <DiagramTitle>Прогноз за годинами</DiagramTitle>
-        <div style={{ padding: "2rem", textAlign: "center", color: "#666" }}>
+        <DiagramMessage>
           {error || "Дані недоступні"}
-        </div>
+        </DiagramMessage>
+        </PageContainer>
       </DiagramSection>
     );
   }
 
   return (
     <DiagramSection>
+      <PageContainer>
       <DiagramTitle>Прогноз за годинами</DiagramTitle>
       <ChartContainer id="chart-container">
         <DiagramWrapper>
@@ -122,11 +129,11 @@ export const WeatherDiagram = ({ city = "Prague" }) => {
             <XAxis
               dataKey="time"
               stroke="#666"
-              style={{ fontSize: "12px" }}
+              tick={{ fontSize: 12 }}
             />
             <YAxis
               stroke="#666"
-              style={{ fontSize: "12px" }}
+              tick={{ fontSize: 12 }}
               label={{ value: "°C", angle: -90, position: "insideLeft" }}
             />
             <Tooltip content={<CustomTooltip />} />
@@ -142,6 +149,7 @@ export const WeatherDiagram = ({ city = "Prague" }) => {
           </LineChart>
         </DiagramWrapper>
       </ChartContainer>
+      </PageContainer>
     </DiagramSection>
   );
 };

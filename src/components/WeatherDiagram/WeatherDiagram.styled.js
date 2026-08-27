@@ -11,7 +11,6 @@ export const DiagramSection = styled.section`
 
 export const DiagramTitle = styled.h2`
   width: 100%;
-  max-width: 980px;
   font-size: 1.1rem;
   font-weight: 600;
   color: #333;
@@ -19,7 +18,7 @@ export const DiagramTitle = styled.h2`
 `;
 
 export const ChartContainer = styled.div`
-  width: min(100%, 980px);
+  width: 100%;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 12px;
@@ -42,4 +41,28 @@ export const DiagramWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+`;
+
+export const DiagramMessage = styled.div`
+  padding: 2rem;
+  color: #666;
+  text-align: center;
+`;
+
+export const TooltipBox = styled.div`
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 12px;
+`;
+
+export const TooltipTime = styled.p`
+  margin: 0;
+  font-weight: bold;
+`;
+
+export const TooltipTemperature = styled.p`
+  margin: 4px 0 0;
+  color: #ffa500;
 `;

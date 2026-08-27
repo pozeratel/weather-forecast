@@ -16,7 +16,7 @@ export const WeatherInfoSection = styled.section`
 `;
 
 export const InfoGrid = styled.div`
-  width: min(100%, 980px);
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, minmax(200px, 1fr));
   gap: 20px;

@@ -13,6 +13,7 @@ import {
   WindIcon,
   VisibilityIcon,
 } from "./WeatherInfo.styled";
+import { PageContainer } from "../PageContainer/PageContainer.styled";
 
 export const WeatherInfo = ({
   feelsLike = "--",
@@ -25,7 +26,8 @@ export const WeatherInfo = ({
 } = {}) => {
   return (
     <WeatherInfoSection>
-      <InfoGrid>
+      <PageContainer>
+        <InfoGrid>
         <InfoCard>
           <InfoLabel>Feels like</InfoLabel>
           <InfoIcon>
@@ -72,7 +74,8 @@ export const WeatherInfo = ({
           </InfoIcon>
           <InfoValue>{visibility}</InfoValue>
         </InfoCard>
-      </InfoGrid>
+        </InfoGrid>
+      </PageContainer>
     </WeatherInfoSection>
   );
 };

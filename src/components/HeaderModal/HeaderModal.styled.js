@@ -64,6 +64,11 @@ export const Field = styled.label`
   font-weight: 600;
 `;
 
+export const ErrorText = styled.span`
+  color: #dc2626;
+  font-size: 13px;
+`;
+
 export const Input = styled.input`
   width: 100%;
   padding: 12px 14px;
