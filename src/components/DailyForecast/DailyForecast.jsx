@@ -85,7 +85,7 @@ export const DailyForecast = ({ city }) => {
   }, [city]);
 
   return (
-    <ForecastSection>
+    <ForecastSection id="weekly-forecast">
       <PageContainer>
         <ForecastContainer>
         <ForecastTitle>{forecast.length || 5}-day forecast</ForecastTitle>

@@ -6,7 +6,7 @@ export const CityWeatherSection = styled.section`
   align-items: center;
   justify-content: center;
   padding: 28px 18px 42px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.sectionBackground};
 `;
 
 export const ForecastGrid = styled.div`
@@ -33,7 +33,7 @@ export const WeatherCard = styled.article`
   flex-direction: column;
   padding: 20px 18px 14px;
   border-radius: 18px;
-  background: #d7d7d7;
+  background: ${({ theme }) => theme.cardBackground};
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 `;
 
@@ -50,14 +50,14 @@ export const CardTitle = styled.h2`
   font-size: 15px;
   line-height: 1.2;
   font-weight: 600;
-  color: #111111;
+  color: ${({ theme }) => theme.highlightedText};
 `;
 
 export const CardSubtitle = styled.span`
   font-size: 11px;
   line-height: 1.2;
   font-weight: 500;
-  color: #4d4d4d;
+  color: ${({ theme }) => theme.mutedText};
 `;
 
 export const TimeValue = styled.div`
@@ -66,7 +66,7 @@ export const TimeValue = styled.div`
   font-size: 30px;
   font-weight: 700;
   line-height: 1.2;
-  color: #111111;
+  color: ${({ theme }) => theme.highlightedText};
 `;
 
 export const ToggleRow = styled.div`
@@ -78,21 +78,30 @@ export const ToggleRow = styled.div`
 
 export const ToggleButton = styled.button`
   flex: 1;
-  border: none;
-  background: transparent;
-  padding: 5px 0;
+  border: 1px solid ${({ theme }) => theme.border};
+  background: ${({ theme }) => theme.cardAltBackground};
+  padding: 8px 6px;
   font-size: 11px;
   line-height: 1.2;
-  font-weight: 500;
-  color: #707070;
+  font-weight: 600;
+  color: ${({ theme }) => theme.mutedText};
   cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: ${({ theme }) => theme.surface};
+    border-color: ${({ theme }) => theme.border};
+    outline: none;
+  }
 `;
 
 export const ToggleButtonActive = styled(ToggleButton)`
-  color: #1b1b1b;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.35);
-  border-radius: 8px;
+  color: ${({ theme }) => theme.highlightedText};
+  background: linear-gradient(135deg, #ffd36d, #ffb347);
+  border-color: rgba(255, 169, 62, 0.8);
+  box-shadow: 0 4px 10px rgba(255, 180, 71, 0.28);
 `;
 
 export const DateRow = styled.div`
@@ -104,7 +113,7 @@ export const DateRow = styled.div`
   font-size: 11px;
   line-height: 1.3;
   font-weight: 500;
-  color: #5f5f5f;
+  color: ${({ theme }) => theme.mutedText};
 `;
 
 export const DateText = styled.span``;
@@ -131,7 +140,7 @@ export const Temperature = styled.p`
   font-size: 38px;
   line-height: 1;
   font-weight: 700;
-  color: #111111;
+  color: ${({ theme }) => theme.highlightedText};
 `;
 
 export const CardFooter = styled.div`
@@ -167,8 +176,8 @@ export const SeeMoreButton = styled.button`
   min-height: 34px;
   border: none;
   border-radius: 12px;
-  background: #efefef;
-  color: #2b2b2b;
+  background: ${({ theme }) => theme.surface};
+  color: ${({ theme }) => theme.text};
   font-size: 11px;
   font-weight: 600;
   cursor: pointer;

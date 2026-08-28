@@ -12,7 +12,7 @@ export const WeatherInfoSection = styled.section`
   align-items: center;
   justify-content: center;
   padding: 28px 18px 42px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.sectionBackground};
 `;
 
 export const InfoGrid = styled.div`
@@ -36,7 +36,7 @@ export const InfoCard = styled.article`
   max-width: 240px;
   padding: 20px 18px;
   border-radius: 18px;
-  background: #d7d7d7;
+  background: ${({ theme }) => theme.cardBackground};
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
@@ -51,7 +51,7 @@ export const InfoLabel = styled.h3`
   margin: 0;
   font-size: 12px;
   font-weight: 500;
-  color: #5f5f5f;
+  color: ${({ theme }) => theme.mutedText};
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
@@ -59,7 +59,7 @@ export const InfoLabel = styled.h3`
 export const InfoValue = styled.div`
   font-size: 28px;
   font-weight: 700;
-  color: #111111;
+  color: ${({ theme }) => theme.highlightedText};
   line-height: 1.2;
 `;
 

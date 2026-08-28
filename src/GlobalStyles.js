@@ -1,12 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
-  @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
-
   :root {
     font-family: "Montserrat", sans-serif;
-    color: #171717;
-    background: #1e1e1e;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -30,5 +26,13 @@ export const GlobalStyles = createGlobalStyle`
   body {
     min-height: 100vh;
     font-family: "Montserrat", sans-serif;
+    background: ${({ theme }) => theme.appBackground};
+    color: ${({ theme }) => theme.text};
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  button,
+  input {
+    font-family: inherit;
   }
 `;

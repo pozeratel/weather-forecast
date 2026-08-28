@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const FooterRoot = styled.footer`
   flex-shrink: 0;
   width: 100%;
-  background: #1e1e1e;
+  background: ${({ theme }) => theme.footerBackground};
 
   @media (min-width: 520px) {
     padding-right: 24px;
@@ -19,7 +19,6 @@ export const FooterContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 25px clamp(24px, 10.8vw, 94px);
-  background: #ffb266;
 
   @media (max-width: 520px) {
     flex-wrap: wrap;

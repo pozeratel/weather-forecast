@@ -11,7 +11,8 @@ export const HeaderContent = styled.div`
   max-width: 448px;
   margin: 0 auto;
   padding: 10px 16px;
-  background: #fff;
+  background: ${({ theme }) => theme.headerBackground};
+  transition: background 0.2s ease;
 
   @media (min-width: 768px) {
     min-height: 53px;
@@ -29,7 +30,7 @@ export const HeaderContent = styled.div`
 
 export const Brand = styled.a`
   width: 56px;
-  color: #171717;
+  color: ${({ theme }) => theme.text};
   line-height: 0.72;
   text-decoration: none;
   transform: rotate(-7deg);
@@ -64,7 +65,7 @@ export const Nav = styled.nav`
   display: none;
 
   a {
-    color: #111;
+    color: ${({ theme }) => theme.text};
     font: 400 8px/1 Arial, sans-serif;
     text-decoration: none;
 
@@ -98,6 +99,7 @@ export const Actions = styled.div`
 
   p {
     margin: 0;
+    color: ${({ theme }) => theme.text};
     font-size: 10px;
   }
 
@@ -110,8 +112,8 @@ export const SignUpButton = styled.button`
   padding: 8px 12px;
   border: 0;
   border-radius: 7px;
-  color: #111;
-  background: #ffb45d;
+  color: ${({ theme }) => theme.buttonText};
+  background: ${({ theme }) => theme.accent};
   font: 400 8px/1 Arial, sans-serif;
   box-shadow: 0 2px 4px rgb(0 0 0 / 12%);
   cursor: pointer;
@@ -135,7 +137,7 @@ export const ProfileButton = styled.button`
   overflow: hidden;
   border: 0;
   border-radius: 50%;
-  background: #627094;
+  background: ${({ theme }) => (theme.appBackground === "#0b1220" ? "#475569" : "#627094")};
   cursor: pointer;
 
   @media (min-width: 1200px) {

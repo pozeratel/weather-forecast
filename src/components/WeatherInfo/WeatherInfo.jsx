@@ -25,7 +25,7 @@ export const WeatherInfo = ({
   visibility = "--",
 } = {}) => {
   return (
-    <WeatherInfoSection>
+    <WeatherInfoSection id="weather-details">
       <PageContainer>
         <InfoGrid>
         <InfoCard>

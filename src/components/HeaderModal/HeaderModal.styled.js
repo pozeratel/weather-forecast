@@ -20,7 +20,7 @@ export const ModalCard = styled.div`
   width: min(100%, 440px);
   padding: 32px;
   border-radius: 24px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.pageBackground};
   box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
   transform: ${({ $isOpen }) =>
     $isOpen ? "translateY(0) scale(1)" : "translateY(12px) scale(0.98)"};
@@ -35,19 +35,19 @@ export const CloseButton = styled.button`
   border: none;
   background: transparent;
   font-size: 28px;
-  color: #64748b;
+  color: ${({ theme }) => theme.mutedText};
   cursor: pointer;
 `;
 
 export const Title = styled.h2`
   margin: 0 0 8px;
   font-size: 28px;
-  color: #0f172a;
+  color: ${({ theme }) => theme.text};
 `;
 
 export const Subtitle = styled.p`
   margin: 0 0 24px;
-  color: #64748b;
+  color: ${({ theme }) => theme.mutedText};
   font-size: 15px;
 `;
 
@@ -59,7 +59,7 @@ export const Form = styled.form`
 export const Field = styled.label`
   display: grid;
   gap: 8px;
-  color: #334155;
+  color: ${({ theme }) => theme.text};
   font-size: 14px;
   font-weight: 600;
 `;
@@ -72,8 +72,10 @@ export const ErrorText = styled.span`
 export const Input = styled.input`
   width: 100%;
   padding: 12px 14px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid ${({ theme }) => theme.border};
   border-radius: 12px;
+  background: ${({ theme }) => theme.appBackground};
+  color: ${({ theme }) => theme.text};
   font-size: 15px;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -88,7 +90,7 @@ export const CheckboxField = styled.label`
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #475569;
+  color: ${({ theme }) => theme.mutedText};
   font-size: 14px;
   cursor: pointer;
 `;

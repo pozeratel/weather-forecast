@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const NewsSection = styled.section`
   width: 100%;
   padding: 18px 16px 36px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.sectionBackground};
 `;
 
 export const NewsContainer = styled.div`
@@ -22,7 +22,7 @@ export const NewsHeader = styled.div`
 
 export const NewsTitle = styled.h2`
   margin: 0;
-  color: #172431;
+  color: ${({ theme }) => theme.text};
   font-size: 1rem;
   line-height: 1.2;
 `;
@@ -71,7 +71,7 @@ export const NewsHeadline = styled.h3`
   display: -webkit-box;
   margin: 0;
   overflow: hidden;
-  color: #172431;
+  color: ${({ theme }) => theme.text};
   font-size: 0.72rem;
   line-height: 1.25;
   font-weight: 500;
@@ -108,7 +108,7 @@ export const SeeMoreButton = styled.a`
 export const NewsStatus = styled.p`
   margin: 0;
   padding: 34px 0;
-  color: #5c6970;
+  color: ${({ theme }) => theme.mutedText};
   font-size: 0.9rem;
   text-align: center;
 `;

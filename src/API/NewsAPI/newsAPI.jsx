@@ -3,16 +3,17 @@ const API_URL = "https://newsapi.org/v2/everything";
 const ANIMAL_TITLE_PATTERN =
   /\b(animal|pet|dog|pupp(?:y|ies)|cat|kitten|bird|fish|turtle|wildlife|zoo|conservation|endangered)\b/i;
 
-export const getNews = async () => {
+export const getNews = async (city = "Prague") => {
   if (!API_KEY) {
     throw new Error("VITE_NEWS_API_KEY is not configured");
   }
 
+  const query = city.trim() || "Prague";
   const params = new URLSearchParams({
-    q: "animal OR pet OR dog OR cat OR wildlife OR bird OR turtle",
+    q: `${query} OR animal OR pet OR dog OR cat OR wildlife OR bird OR turtle`,
     language: "en",
     sortBy: "publishedAt",
-    pageSize: "50",
+    pageSize: "8",
     apiKey: API_KEY,
   });
 

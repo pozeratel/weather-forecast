@@ -114,7 +114,7 @@ export const WeatherDiagram = ({ city = "Prague" }) => {
   }
 
   return (
-    <DiagramSection>
+    <DiagramSection id="hourly-forecast">
       <PageContainer>
       <DiagramTitle>Прогноз за годинами</DiagramTitle>
       <ChartContainer id="chart-container">

@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const ForecastSection = styled.section`
   width: 100%;
   padding: 24px 16px 40px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.sectionBackground};
 `;
 
 export const ForecastContainer = styled.div`
@@ -12,7 +12,7 @@ export const ForecastContainer = styled.div`
   margin: 0 auto;
   padding: 16px;
   border-radius: 10px;
-  background: #e9e9e9;
+  background: ${({ theme }) => theme.surface};
 
   @media (min-width: 768px) {
     padding: 20px 40px 24px;
@@ -28,7 +28,7 @@ export const ForecastTitle = styled.h2`
   font-size: 12px;
   font-weight: 700;
   line-height: 1.2;
-  color: #171717;
+  color: ${({ theme }) => theme.text};
 `;
 
 export const ForecastList = styled.ul`
@@ -46,8 +46,8 @@ export const ForecastRow = styled.li`
   min-height: 32px;
   padding: 2px 10px;
   border-radius: 7px;
-  background: #dcdcdc;
-  color: #171717;
+  background: ${({ theme }) => theme.cardAltBackground};
+  color: ${({ theme }) => theme.text};
   font-size: 11px;
   line-height: 1.2;
 
@@ -84,7 +84,7 @@ export const Description = styled.span`
 export const StatusMessage = styled.p`
   margin: 0;
   padding: 40px 0;
-  color: #595959;
+  color: ${({ theme }) => theme.mutedText};
   font-size: 13px;
   text-align: center;
 `;

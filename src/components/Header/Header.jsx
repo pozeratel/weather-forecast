@@ -16,7 +16,7 @@ import {
 
 const navigation = ["Who we are", "Contacts", "Menu"];
 
-export default function Header() {
+export default function Header({ themeName = "light", onToggleTheme }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user");
@@ -60,6 +60,14 @@ export default function Header() {
         </Nav>
 
         <Actions>
+          <SignUpButton
+            type="button"
+            onClick={onToggleTheme}
+            aria-label="Toggle theme"
+          >
+            {themeName === "dark" ? "Light" : "Dark"}
+          </SignUpButton>
+
           {user ? (
             <p>{user.name}</p>
           ) : (

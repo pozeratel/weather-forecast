@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FiHeart, FiRefreshCw, FiTrash2 } from "react-icons/fi";
 import { getCurrentWeather } from "../../API/Weather APi/weatherAPI";
 import {
@@ -36,11 +36,15 @@ const countryNames = {
   PL: "Poland",
 };
 
-const formatWeatherCard = (weather) => {
-  const timestamp = weather.dt * 1000;
+const normalizeCityName = (city = "") => city.trim().toLowerCase();
+
+const formatWeatherCard = (weather = {}, updatedAt = Date.now()) => {
+  const timestamp = (weather.dt || Date.now() / 1000) * 1000;
+  const cityName = weather.name || "Prague";
 
   return {
-    city: weather.name || "Prague",
+    city: cityName,
+    cityKey: normalizeCityName(cityName),
     country: countryNames[weather.sys?.country] || "Czech Republic",
     time: new Date(timestamp).toLocaleTimeString("uk-UA", {
       hour: "2-digit",
@@ -55,7 +59,8 @@ const formatWeatherCard = (weather) => {
     day: new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
       new Date(timestamp),
     ),
-    temp: `${Math.round(weather.main.temp)}°C`,
+    temp: `${Math.round(weather.main?.temp ?? 0)}°C`,
+    updatedAt,
   };
 };
 
@@ -74,165 +79,196 @@ export const CityWeather = ({
   const [loadingCities, setLoadingCities] = useState({});
 
   useEffect(() => {
+    let isCurrentRequest = true;
+
     const loadWeather = async () => {
       if (!cities.length) {
-        setCards([]);
+        if (isCurrentRequest) {
+          setCards([]);
+        }
         return;
       }
 
       try {
-        const responses = await Promise.all(
+        const responses = await Promise.allSettled(
           cities.map((city) => getCurrentWeather(city)),
         );
 
-        const nextCards = responses.map((weather) => formatWeatherCard(weather));
+        if (!isCurrentRequest) {
+          return;
+        }
+
+        const nextCards = responses.flatMap((result) =>
+          result.status === "fulfilled" ? [formatWeatherCard(result.value)] : [],
+        );
 
         setCards(nextCards);
       } catch {
-        setCards([]);
+        if (isCurrentRequest) {
+          setCards([]);
+        }
       }
     };
 
     loadWeather();
+
+    return () => {
+      isCurrentRequest = false;
+    };
   }, [cities]);
 
   const handleRefresh = async (city) => {
-    setLoadingCities((prev) => ({ ...prev, [city]: true }));
+    const normalizedCity = normalizeCityName(city);
+    setLoadingCities((prev) => ({ ...prev, [normalizedCity]: true }));
+
     try {
       const weather = await getCurrentWeather(city);
-      const updatedCard = formatWeatherCard(weather);
-      setCards((prev) => [
-        ...prev.map((card) => 
-          card.city === city ? { ...updatedCard } : card
+      const updatedCard = formatWeatherCard(weather, Date.now());
+
+      setCards((prev) =>
+        prev.map((card) =>
+          normalizeCityName(card.city) === normalizedCity
+            ? { ...card, ...updatedCard, city: updatedCard.city, cityKey: updatedCard.cityKey }
+            : card,
         ),
-      ]);
+      );
     } catch (error) {
       console.error("Failed to refresh weather:", error);
     } finally {
-      setLoadingCities((prev) => ({ ...prev, [city]: false }));
+      setLoadingCities((prev) => ({ ...prev, [normalizedCity]: false }));
     }
   };
 
-  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
-  const filteredCards = normalizedSearchTerm
-    ? cards.filter(({ city, country }) =>
-        `${city} ${country}`.toLowerCase().includes(normalizedSearchTerm),
-      )
-    : cards;
+  const favoriteSet = useMemo(
+    () => new Set(favoriteCities.map((city) => normalizeCityName(city))),
+    [favoriteCities],
+  );
+
+  const filteredCards = useMemo(() => {
+    const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+
+    if (!normalizedSearchTerm) {
+      return cards;
+    }
+
+    return cards.filter(({ city, country }) =>
+      `${city} ${country}`.toLowerCase().includes(normalizedSearchTerm),
+    );
+  }, [cards, searchTerm]);
 
   return (
     <CityWeatherSection>
       <PageContainer>
         <ForecastGrid>
-        {filteredCards.length > 0 ? (
-          filteredCards.map(({ city, country, time, date, day, temp }) => (
-            <WeatherCard key={city}>
-              <CardHeader>
-                <div>
-                  <CardTitle>{city}</CardTitle>
-                  <CardSubtitle>{country}</CardSubtitle>
-                </div>
-                <RefreshButton
-                  type="button"
-                  onClick={() => handleRefresh(city)}
-                  disabled={loadingCities[city]}
-                  aria-label={`Refresh ${city} weather`}
-                  title="Оновити інформацію"
-                >
-                  <FiRefreshCw />
-                </RefreshButton>
-              </CardHeader>
+          {filteredCards.length > 0 ? (
+            filteredCards.map(({ city, cityKey, country, time, date, day, temp }) => {
+              const isFavorite = favoriteSet.has(cityKey || normalizeCityName(city));
 
-              <TimeValue>{time}</TimeValue>
+              return (
+                <WeatherCard key={cityKey || city}>
+                  <CardHeader>
+                    <div>
+                      <CardTitle>{city}</CardTitle>
+                      <CardSubtitle>{country}</CardSubtitle>
+                    </div>
+                    <RefreshButton
+                      type="button"
+                      onClick={() => handleRefresh(city)}
+                      disabled={loadingCities[cityKey || normalizeCityName(city)]}
+                      aria-label={`Refresh ${city} weather`}
+                      title="Оновити інформацію"
+                    >
+                      <FiRefreshCw />
+                    </RefreshButton>
+                  </CardHeader>
 
-              <ToggleRow>
-                {selectedForecast?.type === "hourly" &&
-                selectedForecast.city === city ? (
-                  <ToggleButtonActive
-                    type="button"
-                    onClick={() => onForecastSelect("hourly", city)}
-                  >
-                    Hourly forecast
-                  </ToggleButtonActive>
-                ) : (
-                  <ToggleButton
-                    type="button"
-                    onClick={() => onForecastSelect("hourly", city)}
-                  >
-                    Hourly forecast
-                  </ToggleButton>
-                )}
-                {selectedForecast?.type === "weekly" &&
-                selectedForecast.city === city ? (
-                  <ToggleButtonActive
-                    type="button"
-                    onClick={() => onForecastSelect("weekly", city)}
-                  >
-                    Weekly forecast
-                  </ToggleButtonActive>
-                ) : (
-                  <ToggleButton
-                    type="button"
-                    onClick={() => onForecastSelect("weekly", city)}
-                  >
-                    Weekly forecast
-                  </ToggleButton>
-                )}
-              </ToggleRow>
+                  <TimeValue>{time}</TimeValue>
 
-              <DateRow>
-                <DateText>{date}</DateText>
-                <DayText>{day}</DayText>
-              </DateRow>
+                  <ToggleRow>
+                    {selectedForecast?.type === "hourly" &&
+                    selectedForecast.city === city ? (
+                      <ToggleButtonActive
+                        type="button"
+                        onClick={() => onForecastSelect("hourly", city)}
+                      >
+                        Hourly forecast
+                      </ToggleButtonActive>
+                    ) : (
+                      <ToggleButton
+                        type="button"
+                        onClick={() => onForecastSelect("hourly", city)}
+                      >
+                        Hourly forecast
+                      </ToggleButton>
+                    )}
+                    {selectedForecast?.type === "weekly" &&
+                    selectedForecast.city === city ? (
+                      <ToggleButtonActive
+                        type="button"
+                        onClick={() => onForecastSelect("weekly", city)}
+                      >
+                        Weekly forecast
+                      </ToggleButtonActive>
+                    ) : (
+                      <ToggleButton
+                        type="button"
+                        onClick={() => onForecastSelect("weekly", city)}
+                      >
+                        Weekly forecast
+                      </ToggleButton>
+                    )}
+                  </ToggleRow>
 
-              <WeatherVisual aria-label={`${city} weather`}>
-                <SunIcon />
-              </WeatherVisual>
+                  <DateRow>
+                    <DateText>{date}</DateText>
+                    <DayText>{day}</DayText>
+                  </DateRow>
 
-              <Temperature>{temp}</Temperature>
+                  <WeatherVisual aria-label={`${city} weather`}>
+                    <SunIcon />
+                  </WeatherVisual>
 
-              <CardFooter>
-                <FavoriteButton
-                  type="button"
-                  $isFavorite={favoriteCities.includes(city)}
-                  onClick={() => onFavoriteToggle(city)}
-                  aria-label={
-                    favoriteCities.includes(city)
-                      ? `Remove ${city} from favorites`
-                      : `Add ${city} to favorites`
-                  }
-                  aria-pressed={favoriteCities.includes(city)}
-                  title={
-                    favoriteCities.includes(city)
-                      ? "Remove from favorites"
-                      : "Add to favorites"
-                  }
-                >
-                  <FiHeart />
-                </FavoriteButton>
+                  <Temperature>{temp}</Temperature>
 
-                <SeeMoreButton
-                  type="button"
-                  onClick={() => onDetailsSelect(city)}
-                  aria-expanded={selectedDetailsCity === city}
-                >
-                  See more
-                </SeeMoreButton>
+                  <CardFooter>
+                    <FavoriteButton
+                      type="button"
+                      $isFavorite={isFavorite}
+                      onClick={() => onFavoriteToggle(city)}
+                      aria-label={
+                        isFavorite ? `Remove ${city} from favorites` : `Add ${city} to favorites`
+                      }
+                      aria-pressed={isFavorite}
+                      title={
+                        isFavorite ? "Remove from favorites" : "Add to favorites"
+                      }
+                    >
+                      <FiHeart />
+                    </FavoriteButton>
 
-                <RemoveButton
-                  type="button"
-                  onClick={() => onCityRemove(city)}
-                  aria-label={`Remove ${city}`}
-                  title="Remove card"
-                >
-                  <FiTrash2 />
-                </RemoveButton>
-              </CardFooter>
-            </WeatherCard>
-          ))
-        ) : (
-          <p>No matching cities or countries found.</p>
-        )}
+                    <SeeMoreButton
+                      type="button"
+                      onClick={() => onDetailsSelect(city)}
+                      aria-expanded={selectedDetailsCity === city}
+                    >
+                      See more
+                    </SeeMoreButton>
+
+                    <RemoveButton
+                      type="button"
+                      onClick={() => onCityRemove(city)}
+                      aria-label={`Remove ${city}`}
+                      title="Remove card"
+                    >
+                      <FiTrash2 />
+                    </RemoveButton>
+                  </CardFooter>
+                </WeatherCard>
+              );
+            })
+          ) : (
+            <p>No matching cities or countries found.</p>
+          )}
         </ForecastGrid>
       </PageContainer>
     </CityWeatherSection>
